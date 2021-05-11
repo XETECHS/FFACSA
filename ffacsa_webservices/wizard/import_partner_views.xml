@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="ffacs_import_partner_view_form" model="ir.ui.view">
+            <field name="name">ffacsa.import.partner.view.form</field>
+            <field name="model">ffacsa.import.partner</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <span class="text-muted">synchronize your contacts in FFACSA SAP with this method</span>
+                        </group>
+                        <group colspan="6">
+                            <field name="partners" />
+                            <field name="contacts" />
+                            <field name="address" />
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="to_do" string="Import" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="btn btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        
+    <record id="action_import_contacts" model="ir.actions.act_window">
+        <field name="name">Import FFACSA Partners</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">ffacsa.import.partner</field>
+        <field name="view_id" ref="ffacs_import_partner_view_form"/>
+        <field name="target">new</field>
+    </record>
+
+
+    <menuitem id="ffacsa_partner_menu"
+        name="FFACSA Data"
+        parent="contacts.menu_contacts"
+        sequence="2"/>
+
+    <menuitem id="import_partner_submenu"
+        name="Import FFACSA Partners"
+        parent="ffacsa_partner_menu"
+        action="action_import_contacts"/>
+    
+    
+    </data>
+
+
+</odoo>

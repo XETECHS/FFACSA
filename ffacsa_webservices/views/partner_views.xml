@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="view_partner_form" model="ir.ui.view">
+            <field name="name">view.partner.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <h1 position="after">
+                    <h3>
+                        <field name="business_name" placeholder="Business Name"/>
+                    </h3>
+                </h1>
+                <field name="phone" position="after">
+                    <field name="phone2" widget="phone"/>
+                </field>
+                <notebook position="inside">
+                    <page name="ffacsa_group" string="FFACSA Data">
+                        <group col="4">
+                            <field name="source_id" />
+                            <field name="balance" />
+                            <field name="credit_line" />
+                            <field name="u_category" />
+                            <field name="UpdateDate" />
+                        </group>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+    
+        <record id="ffacsa_partner_group_view_form" model="ir.ui.view">
+            <field name="name">ffacsa.partner.group.view.form</field>
+            <field name="model">ffacsa.partner.group</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="name" />
+                    <field name="code" />
+                    <field name="type" />
+                    <field name="locked" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="ffacsa_industry_view_form" model="ir.ui.view">
+            <field name="name">ffacsa.industry.view.form</field>
+            <field name="model">ffacsa.industry</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="name" />
+                    <field name="code" />
+                    <field name="description" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="ffacsa_territory_view_form" model="ir.ui.view">
+            <field name="name">ffacsa.territory.view.form</field>
+            <field name="model">ffacsa.territory</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="code" />
+                    <field name="description" />
+                </tree>
+            </field>
+        </record>
+    </data>
+
+    <record id="ffacsa_partner_group_action" model="ir.actions.act_window">
+        <field name="name">Partner Groups</field>
+        <field name="res_model">ffacsa.partner.group</field>
+        <field name="view_mode">tree</field>
+    </record>
+    
+    <record id="ffacsa_industry_action" model="ir.actions.act_window">
+        <field name="name">Industries</field>
+        <field name="res_model">ffacsa.industry</field>
+        <field name="view_mode">tree</field>
+    </record>
+    
+    <record id="ffacsa_territory_action" model="ir.actions.act_window">
+        <field name="name">Territories</field>
+        <field name="res_model">ffacsa.territory</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem
+        id="ffacsa_partner_group_submenu"
+        name="Partner Groups"
+        action="ffacsa_partner_group_action"
+        parent="ffacsa_webservices.ffacsa_data_submenu"
+        sequence="10"/>
+
+    <menuitem
+        id="ffacsa_industry_submenu"
+        name="Industries"
+        action="ffacsa_industry_action"
+        parent="ffacsa_webservices.ffacsa_data_submenu"
+        sequence="10"/>
+
+    <menuitem
+        id="ffacsa_territory_submenu"
+        name="Territories"
+        action="ffacsa_territory_action"
+        parent="ffacsa_webservices.ffacsa_data_submenu"
+        sequence="10"/>
+    
+
+</odoo>

@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ffacsa_webservice_log,access.ffacsa.webservice.log,model_ffacsa_webservice_log,,1,1,1,1
+access_ffacsa_import_partner,access.ffacsa.import.partner,model_ffacsa_import_partner,,1,1,1,1
+access_ffacsa_import_partner_additional,access.ffacsa.import.partner.additional,model_ffacsa_import_partner_additional,,1,1,1,1
+access_ffacsa_partner_group,access.ffacsa.partner.group,model_ffacsa_partner_group,,1,1,1,1
+access_ffacsa_industry,access.ffacsa.industry,model_ffacsa_industry,,1,1,1,1
+access_ffacsa_territory,access.ffacsa.territory,model_ffacsa_territory,,1,1,1,1

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="ffacsa_import_partner_additional_view_form" model="ir.ui.view">
+            <field name="name">ffacsa.import.partner.additional.view.form</field>
+            <field name="model">ffacsa.import.partner.additional</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <span class="text-muted">synchronize your contacts in FFACSA SAP with this method</span>
+                        </group>
+                        <group colspan="6">
+                            <field name="groups" />
+                            <field name="industries" />
+                            <field name="territories" />
+                            <field name="pricelists" />
+                            <field name="conditions" />
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="to_do" string="Import" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="btn btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        
+    <record id="action_import_partner_additional" model="ir.actions.act_window">
+        <field name="name">Import FFACSA Partners Additional</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">ffacsa.import.partner.additional</field>
+        <field name="view_id" ref="ffacsa_import_partner_additional_view_form"/>
+        <field name="target">new</field>
+    </record>
+
+
+    <menuitem id="import_partner_additional_submenu"
+        name="Import FFACSA Partners Additional"
+        parent="ffacsa_webservices.ffacsa_partner_menu"
+        action="action_import_partner_additional"/>
+    
+    
+    </data>
+
+
+</odoo>
