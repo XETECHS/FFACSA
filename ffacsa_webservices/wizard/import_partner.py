@@ -22,25 +22,45 @@ class ImportPartner(models.TransientModel):
         LOGGER = self.env['ffacsa.webservice.log'].logger
         if self.partners:
             data = GET_DATA( 'OCRD' )
+            count = 10
             if data:
+                #for record in data:
                 for record in data:
-                    LOGGER('partner', record, record['CardCode'], update=False)
-        else:
-            _logger.info( 'No HTTP resource was found' )
+                    if count:
+                        LOGGER('partner', record, record['CardCode'], update=False)
+                        count-=1
+                    else: 
+                        continue
+            else:
+                _logger.info( 'No HTTP resource was found' )
 
         if self.contacts:
             data = GET_DATA( 'OCPR' )
+            count = 10
             if data:
+                #for record in data:
                 for record in data:
-                    LOGGER('contact', record, record['CntctCode'], update=False)
+                    if count:
+                        #_logger.info( record )
+                        LOGGER('contact', record, record['CntctCode'], update=False)
+                        count-=1
+                    else: 
+                        continue
             else:
                 _logger.info( 'No HTTP resource was found' )
 
         if self.address:
             data = GET_DATA( 'CRD1' )
+            count = 10
             if data:
+                #for record in data:
                 for record in data:
-                    LOGGER('partner', record, record['CardCode'], update=False)
+                    if count:
+                        #_logger.info( record )
+                        LOGGER('address', record, '', update=False)
+                        count-=1
+                    else: 
+                        continue
         else:
             _logger.info( 'No HTTP resource was found' )
     

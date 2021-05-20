@@ -27,6 +27,12 @@
                         </group>
                     </page>
                 </notebook>
+
+                <xpath expr="//field[@name='child_ids']/form/sheet/group/group/field[@name='name']" position="after">
+                    <field name="first_name" />
+                    <field name="middle_name" />                    
+                    <field name="last_name" />
+                </xpath>
             </field>
         </record>
     

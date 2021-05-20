@@ -10,6 +10,7 @@
             <field name="arch" type="xml">
                 <field name="name" position="after">
                     <field name="code" />
+                    <field name="ffacsa_month" />
                     <field name="ffacsa_days" />
                     <field name="spot" />
                 </field>

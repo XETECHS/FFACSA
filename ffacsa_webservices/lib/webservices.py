@@ -7,7 +7,7 @@ TABLES = {
     # PARTNERS
     'OCRD': 'ocrd',
     'OCPR': 'ocpr',
-    'CRD1': 'cdr1',
+    'CRD1': 'crd1',
     # PARTNER GROUPS
     'OCRG': 'ocrg',
     # INDUSTRIES

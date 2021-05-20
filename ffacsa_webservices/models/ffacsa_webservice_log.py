@@ -7,7 +7,7 @@ from odoo import _, api, fields, models
 
 TYPE = [
     ('partner', 'Partner'),
-    ('contacts', 'Contacts'),
+    ('contact', 'Contacts'),
     ('address', 'Address'),
     ('partner_group', 'Partner Group'),
     ('industry', 'Industry'),
@@ -39,16 +39,16 @@ class WebserviceLog(models.Model):
 
     def action_process(self):
         for record in self:
-            #try:
-            data = json.loads( record.data )
-            if record.operation == 'create':
-                self._create_record(data=data, type=record.type)
-                
-            else:
-                self._update_record(data=data, type=record.type)
-            record.write({'state': 'done'})
-            #except:
-            #    record.write({'state': 'fail'})
+            try:
+                data = json.loads( record.data )
+                if record.operation == 'create':
+                    self._create_record(data=data, type=record.type)
+                    
+                else:
+                    self._update_record(data=data, type=record.type)
+                record.write({'state': 'done'})
+            except:
+                record.write({'state': 'fail'})
 
     def logger(self, type, data, id, update=False):
         values = {
@@ -62,10 +62,11 @@ class WebserviceLog(models.Model):
         return
 
     def _create_record(self ,data=False, type=False):
+        partner = self.env['res.partner']
         if not data or not type:
             return
         if type == 'partner':
-            self.env['res.partner'].create({
+            partner.create({
                 'type': 'contact',
                 'company_type': 'company',
                 'name': data.get('CardName', ''),
@@ -81,6 +82,51 @@ class WebserviceLog(models.Model):
                 'u_category': data.get('', ''),
                 #'UpdateDate': data.get('', ''),
             })
+        elif type == 'contact':
+            parent_id = partner.search([('source_id', '=', data.get('CardCode') )])
+            comment = ''
+            if data.get('Notes1'):
+                comment = data.get('Notes1')
+            if data.get('Notes2'):
+                comment+=data.get('Notes2')
+            partner.create({
+                'type': 'contact',
+                'parent_id': parent_id.id if parent_id else False,
+                'street': data.get('Address', ''),
+                'name': data.get('Name', ''),
+                'function': data.get('Position', ''),
+                'phone': data.get('Tel1', ''),
+                'phone2': data.get('Tel2', ''),
+                'mobile': data.get('Cellolar', ''),
+                'email': data.get('E_MailL', ''),
+                'source_id': data.get('CntctCode', ''),
+                'first_name': data.get('FirstName', ''),
+                'middle_name': data.get('MiddleName', ''),
+                'last_name': data.get('LastName', ''),
+                'comment': comment,
+                #'UpdateDate': data.get('', ''),
+            })
+        elif type == 'address':
+            parent_id = partner.search([('source_id', '=', data.get('CardCode') )])
+            country_id = self.env['res.country'].search([('code', '=', data.get('County')) ])
+            if not country_id:
+                country_id = self.env.ref('base.gt')
+
+            
+            partner.create({
+                'type': 'invoice' if data.get('CardName', '') == 'B' else 'delivery',
+                #'company_type': 'company',
+                'name': data.get('Address'),
+                'parent_id': parent_id.id if parent_id else False,
+                'street': data.get('Address', ''),
+                'vat': data.get('TaxOffice', ''),
+                #'phone': data.get('LineNum', ''),
+                'street': data.get('Address2'),
+                'street2': data.get('Address3'),
+                'country_id': country_id.id
+                #'UpdateDate': data.get('', ''),
+            })
+        
         elif type== 'partner_group':
             self.env['ffacsa.partner.group'].create({
                 'code': data.get('GroupCode', ''),

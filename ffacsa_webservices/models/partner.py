@@ -5,6 +5,11 @@ from odoo import _, api, fields, models
 class ResPartner(models.Model):
     _inherit = 'res.partner'
     _description = 'Res Partner'
+
+    # CONTACT INFORMATION
+    first_name  = fields.Char(string='First Name')
+    middle_name = fields.Char(string='Middle Name')
+    last_name = fields.Char(string='Last Name')
     
     phone2 = fields.Char()
     source_id = fields.Char(string='Source')
