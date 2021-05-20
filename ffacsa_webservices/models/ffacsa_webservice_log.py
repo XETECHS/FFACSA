@@ -10,7 +10,11 @@ TYPE = [
     ('contacts', 'Contacts'),
     ('address', 'Address'),
     ('partner_group', 'Partner Group'),
-    ('industry', 'Industry')
+    ('industry', 'Industry'),
+    ('territory', 'Territory'),
+    ('pricelist', 'Pricelist'),
+    ('paymenterm', 'Payment Term'),
+
 ]
 
 class WebserviceLog(models.Model):
@@ -35,16 +39,16 @@ class WebserviceLog(models.Model):
 
     def action_process(self):
         for record in self:
-            try:
-                data = json.loads( record.data )
-                if record.operation == 'create':
-                    self._create_record(data=data, type=record.type)
-                    
-                else:
-                    self._update_record(data=data, type=record.type)
-                record.write({'state': 'done'})
-            except:
-                record.write({'state': 'fail'})
+            #try:
+            data = json.loads( record.data )
+            if record.operation == 'create':
+                self._create_record(data=data, type=record.type)
+                
+            else:
+                self._update_record(data=data, type=record.type)
+            record.write({'state': 'done'})
+            #except:
+            #    record.write({'state': 'fail'})
 
     def logger(self, type, data, id, update=False):
         values = {
@@ -89,6 +93,27 @@ class WebserviceLog(models.Model):
                 'code': data.get('IndCode', ''),
                 'name': data.get('IndName', ''),
                 'description': data.get('IndDesc', ''),
+            })
+        elif type=='territory':
+            self.env['ffacsa.territory'].create({
+                'code': data.get('territryID', ''),
+                'description': data.get('descript', ''),
+            })
+        elif type=='pricelist':
+            self.env['product.pricelist'].create({
+                'code': data.get('ListNum', ''),
+                'name': data.get('ListName', ''),
+                'active': True if data.get('ValidFor', '') == 'Y' else False,
+                # 'branch_id': data.get('U_Agencia', ''),
+                # 'level': data.get('U_Nivel', ''),
+            })
+        elif type=='paymenterm':
+            self.env['account.payment.term'].create({
+                'code': str( data.get('GroupNum', '') ),
+                'name': data.get('PymntGroup', ''),
+                'ffacsa_month': data.get('ExtraMonth', '') ,
+                'ffacsa_days': data.get('ExtraDays', ''),
+                'spot': True if data.get('Contado', '') == 'Y' else False,
             })
         else:
             return

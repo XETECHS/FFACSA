@@ -13,6 +13,8 @@
         'security/ir.model.access.csv',
         'views/ffacsa_webservice_log_views.xml',
         'views/partner_views.xml',
+        'views/product_pricelist_views.xml',
+        'views/account_views.xml',
         'wizard/import_partner_views.xml',
         'wizard/import_partner_additional_views.xml'
     ],

@@ -32,9 +32,9 @@ class ImportPartner(models.TransientModel):
             data = GET_DATA( 'OCPR' )
             if data:
                 for record in data:
-                    LOGGER('partner', record, record['CardCode'], update=False)
-        else:
-            _logger.info( 'No HTTP resource was found' )
+                    LOGGER('contact', record, record['CntctCode'], update=False)
+            else:
+                _logger.info( 'No HTTP resource was found' )
 
         if self.address:
             data = GET_DATA( 'CRD1' )

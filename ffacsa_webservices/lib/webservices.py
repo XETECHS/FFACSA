@@ -12,8 +12,12 @@ TABLES = {
     'OCRG': 'ocrg',
     # INDUSTRIES
     'OOND': 'oond',
+    # TERRIORIES
+    'OTER': 'oter',
     # PRICE LIST
     'OPLN': 'opln',
+    # Payment Conditions
+    'OCTG': 'octg',
 }
 
 def GET_DATA(table=False):

@@ -42,22 +42,22 @@ class ImportPartnerAdditional(models.TransientModel):
             data = GET_DATA( 'OTER' )
             if data:
                 for record in data:
-                    LOGGER('territory', record, record['CardCode'], update=False)
+                    LOGGER('territory', record, record['territryID'], update=False)
         else:
             _logger.info( 'No HTTP resource was found' )
 
         if self.pricelists:
-            data = GET_DATA( 'OCPR' )
+            data = GET_DATA( 'OPLN' )
             if data:
                 for record in data:
-                    LOGGER('partner', record, record['CardCode'], update=False)
+                    LOGGER('pricelist', record, record['ListNum'], update=False)
         else:
             _logger.info( 'No HTTP resource was found' )
 
         if self.conditions:
-            data = GET_DATA( 'CRD1' )
+            data = GET_DATA( 'OCTG' )
             if data:
                 for record in data:
-                    LOGGER('partner', record, record['CardCode'], update=False)
+                    LOGGER('paymenterm', record, record['GroupNum'], update=False)
         else:
             _logger.info( 'No HTTP resource was found' )   
