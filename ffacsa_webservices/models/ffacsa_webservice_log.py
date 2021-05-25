@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import json
+import logging
 from datetime import datetime
 
 from odoo import _, api, fields, models
+_logger = logging.getLogger( __name__ )
 
 TYPE = [
     ('partner', 'Partner'),
@@ -16,6 +18,18 @@ TYPE = [
     ('paymenterm', 'Payment Term'),
 
 ]
+
+OBJS = {
+    'partner': 'res.partner',
+    'contact': 'res.partner',
+    'address': 'res.partner',
+    'partner_group': 'ffacsa.partner.group',
+    'industry': 'ffacsa.industry',
+    'territory': 'ffacsa.territory',
+    'pricelist': 'product.pricelist',
+    'paymenterm': 'account.payment.term'
+}
+
 
 class WebserviceLog(models.Model):
     _name = 'ffacsa.webservice.log'
@@ -39,23 +53,19 @@ class WebserviceLog(models.Model):
 
     def action_process(self):
         for record in self:
-            try:
-                data = json.loads( record.data )
-                if record.operation == 'create':
-                    self._create_record(data=data, type=record.type)
-                    
-                else:
-                    self._update_record(data=data, type=record.type)
-                record.write({'state': 'done'})
-            except:
-                record.write({'state': 'fail'})
+            #try:
+            data = json.loads( record.data )
+            self._create_record(data=data, type=record.type)
+            record.write({'state': 'done'})
+            #except:
+            #record.write({'state': 'fail'})
 
-    def logger(self, type, data, id, update=False):
+    def logger(self, type, data, id):
         values = {
                 'type': type,
                 'source_id': id,
                 'data': json.dumps( data ),
-                'operation': 'update' if update else 'create'
+                'operation': 'create'
             }
         self.create( values )
         self.env.cr.commit()
@@ -66,30 +76,50 @@ class WebserviceLog(models.Model):
         if not data or not type:
             return
         if type == 'partner':
-            partner.create({
-                'type': 'contact',
-                'company_type': 'company',
-                'name': data.get('CardName', ''),
-                'vat': data.get('AddId', ''),
-                'phone': data.get('Phone1', ''),
-                'phone2': data.get('Phone2', ''),
-                'mobile': data.get('Cellular', ''),
-                'email': data.get('E_Mail', ''),
-                'source_id': data.get('CardCode', ''),
-                'business_name': data.get('CardFName', ''),
-                'balance': data.get('Balance', 0.0),
-                'credit_line': data.get('CreditLine', 0.0),
-                'u_category': data.get('', ''),
-                #'UpdateDate': data.get('', ''),
-            })
+            partner_id = partner.search([('source_id', '=', data.get('CardCode') )], limit=1)
+            group_id = self.env['ffacsa.partner.group'].search( [('code', '=', data.get('GroupCode', ''))], limit=1 )
+            industry_id = self.env['ffacsa.industry'].search( [('code', '=', data.get('IndustryC', ''))], limit=1 )
+            territory_id = self.env['ffacsa.territory'].search( [('code', '=', data.get('Territory', ''))], limit=1 )
+            payment_term_id = self.env['account.payment.term'].search( [('code', '=', data.get('GroupNum', ''))], limit=1 )
+            product_pricelist = self.env['product.pricelist'].search( [('code', '=', data.get('ListNum', ''))], limit=1 )
+            values = {
+                    'type': 'contact',
+                    'company_type': 'company',
+                    'name': data.get('CardName', ''),
+                    'vat': data.get('AddId', ''),
+                    'ffacsa_group_id': group_id.id,
+                    'ffacsa_industry_id': industry_id.id,
+                    'ffacsa_territory_id': territory_id.id,
+                    'property_payment_term_id': payment_term_id.id,
+                    'property_product_pricelist': product_pricelist.id,
+                    'phone': data.get('Phone1', ''),
+                    'phone2': data.get('Phone2', ''),
+                    'mobile': data.get('Cellular', ''),
+                    'email': data.get('E_Mail', ''),
+                    'source_id': data.get('CardCode', ''),
+                    'business_name': data.get('CardFName', ''),
+                    'website': data.get('IntrntSite', ''),
+                    'balance': data.get('Balance', 0.0),
+                    'credit_line': data.get('CreditLine', 0.0),
+                    'u_category': data.get('', ''),
+                    #'UpdateDate': data.get('', ''),
+                }
+            if not partner_id:
+                partner.create( values )
+                _logger.info( 'Create Partner' )
+            else:
+                self._update_record(values, 'res.partner', partner_id.id)
+                _logger.info( values )
+            
         elif type == 'contact':
+            partner_id = partner.search([('source_id', '=', data.get('CntctCode') )], limit=1)
             parent_id = partner.search([('source_id', '=', data.get('CardCode') )])
             comment = ''
             if data.get('Notes1'):
                 comment = data.get('Notes1')
             if data.get('Notes2'):
                 comment+=data.get('Notes2')
-            partner.create({
+            values = {
                 'type': 'contact',
                 'parent_id': parent_id.id if parent_id else False,
                 'street': data.get('Address', ''),
@@ -105,7 +135,11 @@ class WebserviceLog(models.Model):
                 'last_name': data.get('LastName', ''),
                 'comment': comment,
                 #'UpdateDate': data.get('', ''),
-            })
+            }
+            if not partner_id:   
+                partner.create( values )
+            else:
+                self._update_record(values, 'res.partner', partner_id.id)
         elif type == 'address':
             parent_id = partner.search([('source_id', '=', data.get('CardCode') )])
             country_id = self.env['res.country'].search([('code', '=', data.get('County')) ])
@@ -128,38 +162,76 @@ class WebserviceLog(models.Model):
             })
         
         elif type== 'partner_group':
-            self.env['ffacsa.partner.group'].create({
-                'code': data.get('GroupCode', ''),
-                'name': data.get('GroupName', ''),
-                'type': data.get('GroupType', ''),
-                'locked': False if data.get('Locked') == 'N' else True
-            })
+            group = self.env['ffacsa.partner.group']
+            group_id = group.search( [('code', '=', 'GroupCode')], limit=1 )
+            values = {
+                    'code': data.get('GroupCode', ''),
+                    'name': data.get('GroupName', ''),
+                    'type': data.get('GroupType', ''),
+                    'locked': False if data.get('Locked') == 'N' else True
+                }
+            if not group_id:
+                group.create( values )
+            else:
+                self._update_record( values )
         elif type=='industry':
-            self.env['ffacsa.industry'].create({
-                'code': data.get('IndCode', ''),
-                'name': data.get('IndName', ''),
-                'description': data.get('IndDesc', ''),
-            })
+            industry = self.env['ffacsa.industry']
+            industry_id = industry.search( [('code', '=', 'IndCode')], limit=1 )
+            values = {
+                    'code': data.get('IndCode', ''),
+                    'name': data.get('IndName', ''),
+                    'description': data.get('IndDesc', ''),
+                }
+            if not industry_id:
+                industry.create( values )
+            else:
+                self._update_record( values , 'ffacsa.industry', industry_id.id)
         elif type=='territory':
-            self.env['ffacsa.territory'].create({
-                'code': data.get('territryID', ''),
-                'description': data.get('descript', ''),
-            })
+            territory = self.env['ffacsa.territory']
+            territory_id = territory.search( [('code', '=', 'territryID')], limit=1 )
+            values = {
+                    'code': data.get('territryID', ''),
+                    'description': data.get('descript', ''),
+                }
+            if not territory_id:
+                territory.create( values )
+            else:
+                self._update_record( values , 'ffacsa.territory', territory_id.id)
         elif type=='pricelist':
-            self.env['product.pricelist'].create({
+            pricelist = self.env['product.pricelist']
+            pricelist_id = pricelist.search([('code', '=', 'ListNum')], limit=1)
+            values = {
                 'code': data.get('ListNum', ''),
                 'name': data.get('ListName', ''),
                 'active': True if data.get('ValidFor', '') == 'Y' else False,
                 # 'branch_id': data.get('U_Agencia', ''),
                 # 'level': data.get('U_Nivel', ''),
-            })
+            }
+            if not pricelist_id:
+                pricelist.create( values )
+            else:
+                self._update_record(values, 'product.pricelist', pricelist_id.id)
         elif type=='paymenterm':
-            self.env['account.payment.term'].create({
+            payment_term = self.env['account.payment.term']
+            payment_term_id = payment_term.search( [('code', '=', 'GroupNum')], limit=1 )
+            values = {
                 'code': str( data.get('GroupNum', '') ),
                 'name': data.get('PymntGroup', ''),
                 'ffacsa_month': data.get('ExtraMonth', '') ,
                 'ffacsa_days': data.get('ExtraDays', ''),
                 'spot': True if data.get('Contado', '') == 'Y' else False,
-            })
+            }
+            if not payment_term_id:
+                payment_term.create( values )
+            else:
+                self._update_record(values, 'account.payment.term', payment_term_id.id)
         else:
             return
+
+
+    def _update_record(self, values, object, id):
+        _logger.info( [object, id] )
+        record = self.env[object].browse( id )
+        record.write(
+            values
+        )

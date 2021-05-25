@@ -10,7 +10,12 @@ class ResPartner(models.Model):
     first_name  = fields.Char(string='First Name')
     middle_name = fields.Char(string='Middle Name')
     last_name = fields.Char(string='Last Name')
-    
+
+    ffacsa_group_id = fields.Many2one('ffacsa.partner.group', string='FFACSA Group')
+    ffacsa_industry_id = fields.Many2one('ffacsa.industry', string='FFACSA Industry')
+    ffacsa_territory_id = fields.Many2one('ffacsa.territory', string='FFACSA Territory')
+
+
     phone2 = fields.Char()
     source_id = fields.Char(string='Source')
     business_name = fields.Char(string='Business Name')
