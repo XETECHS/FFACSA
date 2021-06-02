@@ -16,19 +16,9 @@ TYPE = [
     ('territory', 'Territory'),
     ('pricelist', 'Pricelist'),
     ('paymenterm', 'Payment Term'),
+    ('product', 'Product')
 
 ]
-
-OBJS = {
-    'partner': 'res.partner',
-    'contact': 'res.partner',
-    'address': 'res.partner',
-    'partner_group': 'ffacsa.partner.group',
-    'industry': 'ffacsa.industry',
-    'territory': 'ffacsa.territory',
-    'pricelist': 'product.pricelist',
-    'paymenterm': 'account.payment.term'
-}
 
 
 class WebserviceLog(models.Model):
@@ -225,6 +215,28 @@ class WebserviceLog(models.Model):
                 payment_term.create( values )
             else:
                 self._update_record(values, 'account.payment.term', payment_term_id.id)
+        
+        elif type=='product':
+            product = self.env['product.template']
+            product_id = product.search( [('code', '=', 'GroupNum')], limit=1 )
+            values = {
+                'code': str( data.get('ItemCode', '') ),
+                'name': data.get('ItemName', ''),
+                'default_code': data.get('ItemCode', ''),
+                'description_sale': data.get('FrgnName', ''),
+                'type': 'product',
+                'sale_ok': data.get('SellItem', '') == 'Y',
+                'purchase_ok': data.get('PrchseItem', '') == 'Y',
+                'volume': data.get('SVolume', ''),
+                'weight': data.get('SWeight1', ''),
+                'description': data.get('UserText', ''),
+                #'categ_id': ItemCategoria,
+                #'website_published': data.get('PublicarWeb', '') == 'Y',
+            }
+            if not product_id:
+                product.create( values )
+            else:
+                self._update_record(values, 'product.template', product_id.id)
         else:
             return
 

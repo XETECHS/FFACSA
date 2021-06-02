@@ -2,5 +2,6 @@
 
 from . import import_partner
 from . import import_partner_additional
+from . import import_product
 
 

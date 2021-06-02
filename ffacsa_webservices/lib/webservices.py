@@ -18,6 +18,17 @@ TABLES = {
     'OPLN': 'opln',
     # Payment Conditions
     'OCTG': 'octg',
+
+    # PRODUCT
+    'OITM': 'oitm',
+    # PRICE 
+    'ITM1': 'itm1',
+    # INVENTORY
+    'OITW': 'oitw',
+    # PRODUCT GROUPS 
+    'OITB': 'oitb',
+    # WAREHOUSE
+    'OWHS' :'owhs'
 }
 
 def GET_DATA(table=False):

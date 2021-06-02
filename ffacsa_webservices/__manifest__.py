@@ -15,8 +15,11 @@
         'views/partner_views.xml',
         'views/product_pricelist_views.xml',
         'views/account_views.xml',
+        'views/product_views.xml',
         'wizard/import_partner_views.xml',
-        'wizard/import_partner_additional_views.xml'
+        'wizard/import_partner_additional_views.xml',
+        'wizard/import_product_views.xml',
+        
     ],
     'application': True,
 }
