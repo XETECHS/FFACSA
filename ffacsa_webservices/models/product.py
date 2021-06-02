@@ -6,4 +6,4 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
     _description = 'Product Template'
     
-    code = fields.Char(string='Code', required=True)
+    code = fields.Char(string='Code')
