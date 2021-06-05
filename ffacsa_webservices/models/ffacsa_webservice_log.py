@@ -217,8 +217,8 @@ class WebserviceLog(models.Model):
                 self._update_record(values, 'account.payment.term', payment_term_id.id)
         
         elif type=='product':
-            product = self.env['product.template']
-            product_id = product.search( [('code', '=', 'GroupNum')], limit=1 )
+            product = self.env['product.product']
+            product_id = product.search( [('code', '=',  data.get('ItemCode', '') )], limit=1 )
             values = {
                 'code': str( data.get('ItemCode', '') ),
                 'name': data.get('ItemName', ''),
@@ -236,10 +236,9 @@ class WebserviceLog(models.Model):
             if not product_id:
                 product.create( values )
             else:
-                self._update_record(values, 'product.template', product_id.id)
+                self._update_record(values, 'product.product', product_id.id)
         else:
             return
-
 
     def _update_record(self, values, object, id):
         _logger.info( [object, id] )

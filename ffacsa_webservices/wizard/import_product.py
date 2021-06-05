@@ -23,14 +23,16 @@ class ImportProduct(models.TransientModel):
     def to_do(self):
         LOGGER = self.env['ffacsa.webservice.log'].logger
         if self.product:
-            data = GET_DATA( 'OITM' )
-            count = 10
-            if data:
-                for record in data:
-                    if count:
+            end, pageNumber = True, 1
+            while end:
+                data = GET_DATA( 'OITM', orderBy='ItemCode', pageSize=100, pageNumber=pageNumber )
+                if data:
+                    for record in data['Results']:
                         LOGGER('product', record, record['ItemCode'])
-                        count-=1
-                    else: 
-                        continue
-            else:
-                _logger.info( 'No HTTP resource was found' )
+                    if data['NextPageUrl']:
+                        pageNumber+=1
+                    else:
+                        end = False
+                else:
+                    _logger.info( 'No HTTP resource was found' )
+                    end = False

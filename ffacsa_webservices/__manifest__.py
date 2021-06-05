@@ -7,7 +7,8 @@
     'license': 'LGPL-3',
     'depends': [
         'contacts',
-        'sale_management'
+        'sale_management',
+        'stock'
     ],
     'data': [
         'security/ir.model.access.csv',

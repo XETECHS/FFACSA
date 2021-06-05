@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import logging
-import json
 
-from odoo import _, api, fields, models
+from odoo import _, fields, models
 from odoo.addons.ffacsa_webservices.lib.webservices import GET_DATA
-from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger( __name__ )
 
@@ -21,46 +19,44 @@ class ImportPartner(models.TransientModel):
     def to_do(self):
         LOGGER = self.env['ffacsa.webservice.log'].logger
         if self.partners:
-            data = GET_DATA( 'OCRD' )
-            count = 10
-            if data:
-                #for record in data:
-                for record in data:
-                    if count:
-                        LOGGER('partner', record, record['CardCode'], update=False)
-                        count-=1
-                    else: 
-                        continue
-            else:
-                _logger.info( 'No HTTP resource was found' )
+            end, pageNumber = True, 1
+            while end:
+                data = GET_DATA( 'OCRD', orderBy='CardCode', pageSize=100, pageNumber=pageNumber )
+                if data:
+                    for record in data['Results']:
+                        LOGGER( 'partner', record, record['CardCode'] )
+                    if data['NextPageUrl']:
+                        pageNumber+=1
+                    else:
+                        end = False
+                else:
+                    _logger.info( 'No HTTP resource was found' )
 
         if self.contacts:
-            data = GET_DATA( 'OCPR' )
-            count = 10
-            if data:
-                #for record in data:
-                for record in data:
-                    if count:
-                        #_logger.info( record )
-                        LOGGER('contact', record, record['CntctCode'], update=False)
-                        count-=1
-                    else: 
-                        continue
-            else:
-                _logger.info( 'No HTTP resource was found' )
+            end, pageNumber = True, 1
+            while end:
+                data = GET_DATA( 'OCPR', orderBy='CntctCode', pageSize=100, pageNumber=pageNumber )
+                if data:
+                    for record in data['Results']:
+                        LOGGER( 'contact', record, record['CntctCode'] )
+                    if data['NextPageUrl']:
+                        pageNumber+=1
+                    else:
+                        end = False 
+                else:
+                    _logger.info( 'No HTTP resource was found' )
 
         if self.address:
-            data = GET_DATA( 'CRD1' )
-            count = 10
-            if data:
-                #for record in data:
-                for record in data:
-                    if count:
-                        #_logger.info( record )
-                        LOGGER('address', record, '', update=False)
-                        count-=1
-                    else: 
-                        continue
-        else:
-            _logger.info( 'No HTTP resource was found' )
+            end, pageNumber = True, 1
+            while end:
+                data = GET_DATA( 'CRD1', orderBy='CardCode', pageSize=100, pageNumber=pageNumber )
+                if data:
+                    for record in data['Results']:
+                        LOGGER('address', record, '')
+                    if data['NextPageUrl']:
+                        pageNumber+=1
+                    else:
+                        end = False
+                else:
+                    _logger.info( 'No HTTP resource was found' )
     

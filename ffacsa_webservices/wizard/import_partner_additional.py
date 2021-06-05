@@ -26,38 +26,38 @@ class ImportPartnerAdditional(models.TransientModel):
             data = GET_DATA( 'OCRG' )
             if data:
                 for record in data:
-                    LOGGER('partner_group', record, record['GroupCode'], update=False)
-        else:
-            _logger.info( 'No HTTP resource was found' )
+                    LOGGER('partner_group', record, record['GroupCode'] )
+            else:
+                _logger.info( 'No HTTP resource was found' )
 
         if self.industries:
             data = GET_DATA( 'OOND' )
             if data:
                 for record in data:
-                    LOGGER('industry', record, record['IndCode'], update=False)
-        else:
-            _logger.info( 'No HTTP resource was found' )
+                    LOGGER('industry', record, record['IndCode'] )
+            else:
+                _logger.info( 'No HTTP resource was found' )
 
         if self.territories:
             data = GET_DATA( 'OTER' )
             if data:
                 for record in data:
-                    LOGGER('territory', record, record['territryID'], update=False)
-        else:
-            _logger.info( 'No HTTP resource was found' )
+                    LOGGER('territory', record, record['territryID'] )
+            else:
+                _logger.info( 'No HTTP resource was found' )
 
         if self.pricelists:
             data = GET_DATA( 'OPLN' )
             if data:
                 for record in data:
-                    LOGGER('pricelist', record, record['ListNum'], update=False)
-        else:
-            _logger.info( 'No HTTP resource was found' )
+                    LOGGER('pricelist', record, record['ListNum'] )
+            else:
+                _logger.info( 'No HTTP resource was found' )
 
         if self.conditions:
             data = GET_DATA( 'OCTG' )
             if data:
                 for record in data:
-                    LOGGER('paymenterm', record, record['GroupNum'], update=False)
-        else:
-            _logger.info( 'No HTTP resource was found' )   
+                    LOGGER('paymenterm', record, record['GroupNum'] )
+            else:
+                _logger.info( 'No HTTP resource was found' )   
