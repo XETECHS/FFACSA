@@ -8,8 +8,8 @@
     'depends': [
         'contacts',
         'sale_management',
-        'stock'
-    ],
+        'stock',
+        'branch'],
     'data': [
         'security/ir.model.access.csv',
         'views/ffacsa_webservice_log_views.xml',
@@ -17,10 +17,10 @@
         'views/product_pricelist_views.xml',
         'views/account_views.xml',
         'views/product_views.xml',
+        'views/sale_views.xml',
         'wizard/import_partner_views.xml',
         'wizard/import_partner_additional_views.xml',
         'wizard/import_product_views.xml',
         
     ],
-    'application': True,
 }

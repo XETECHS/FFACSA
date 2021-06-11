@@ -19,6 +19,7 @@ class ImportProduct(models.TransientModel):
     group = fields.Boolean(string='Groups?')
     warehouse = fields.Boolean(string='Warehouses?')
     categ = fields.Boolean(string='Categories?')
+    subcateg = fields.Boolean(string='subCategories?')
 
     def to_do(self):
         LOGGER = self.env['ffacsa.webservice.log'].logger
@@ -29,6 +30,64 @@ class ImportProduct(models.TransientModel):
                 if data:
                     for record in data['Results']:
                         LOGGER('product', record, record['ItemCode'])
+                    if data['NextPageUrl']:
+                        pageNumber+=1
+                    else:
+                        end = False
+                else:
+                    _logger.info( 'No HTTP resource was found' )
+                    end = False
+        if self.group:
+            end, pageNumber = True, 1
+            while end:
+                data = GET_DATA( 'OITB', orderBy='ItmsGrpCod', pageSize=50, pageNumber=pageNumber )
+                if data:
+                    for record in data['Results']:
+                        LOGGER('product_group', record, record['ItmsGrpCod'])
+                    if data['NextPageUrl']:
+                        pageNumber+=1
+                    else:
+                        end = False
+                else:
+                    _logger.info( 'No HTTP resource was found' )
+                    end = False
+        
+        if self.warehouse:
+            end, pageNumber = True, 1
+            while end:
+                data = GET_DATA( 'OWHS', orderBy='WhsCode', pageSize=50, pageNumber=pageNumber )
+                if data:
+                    for record in data['Results']:
+                        LOGGER('warehouse', record, record['WhsCode'])
+                    if data['NextPageUrl']:
+                        pageNumber+=1
+                    else:
+                        end = False
+                else:
+                    _logger.info( 'No HTTP resource was found' )
+                    end = False
+        
+        if self.categ:
+            end, pageNumber = True, 1
+            while end:
+                data = GET_DATA( 'ItemCategoria', orderBy='Code', pageSize=50, pageNumber=pageNumber )
+                if data:
+                    for record in data['Results']:
+                        LOGGER('categ', record, record['Code'])
+                    if data['NextPageUrl']:
+                        pageNumber+=1
+                    else:
+                        end = False
+                else:
+                    _logger.info( 'No HTTP resource was found' )
+                    end = False
+        if self.subcateg:
+            end, pageNumber = True, 1
+            while end:
+                data = GET_DATA( 'ItemSubCategoria', orderBy='Code', pageSize=50, pageNumber=pageNumber )
+                if data:
+                    for record in data['Results']:
+                        LOGGER('subcateg', record, record['Code'])
                     if data['NextPageUrl']:
                         pageNumber+=1
                     else:

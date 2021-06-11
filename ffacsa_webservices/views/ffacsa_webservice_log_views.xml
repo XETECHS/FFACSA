@@ -59,6 +59,15 @@
             <field name="view_mode">tree,form</field>
         </record>
 
+        <record id="model_ffacsa_webservice_log_action_process" model="ir.actions.server">
+            <field name="name">Process</field>
+            <field name="model_id" ref="ffacsa_webservices.model_ffacsa_webservice_log"/>
+            <field name="binding_model_id" ref="ffacsa_webservices.model_ffacsa_webservice_log"/>
+            <field name="binding_view_types">form,list</field>
+            <field name="state">code</field>
+            <field name="code">action = records.action_process()</field>
+        </record>
+
     <menuitem
         id="ffacsa_webservice_log_menu"
         name="Logs"

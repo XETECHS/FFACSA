@@ -9,9 +9,9 @@
             <field name="arch" type="xml">
                 <xpath expr="//page[@name='other_information']" position="inside">
                     <!-- Add your fields or attributes here -->
-                    <group string="Branch" name="branch" invisible="True">
+                    <group string="Branch" name="branch" >
                         <group>
-                            <field name="branch_id" invisible="True"/>
+                            <field name="branch_id"/>
                         </group>
                     </group>
                 </xpath>
@@ -25,7 +25,8 @@
             <field name="inherit_id" ref="sale.view_sales_order_filter"/>
             <field name="arch" type="xml">
                 <xpath expr="//group" position="inside">
-                        <filter string="Branch" name="branch" domain="[]" context="{'group_by':'branch_id'}"/>
+                    
+                    <filter string="Branch" name="branch" domain="[]" context="{'group_by':'branch_id'}"/>
                 </xpath>
             </field>
         </record>

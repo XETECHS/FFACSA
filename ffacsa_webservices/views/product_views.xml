@@ -2,6 +2,17 @@
 <odoo>
 
     <data>
+
+        <record id="product_category_form_view" model="ir.ui.view">
+            <field name="name">product.category.form.inherit</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="product.product_category_form_view"/>
+            <field name="arch" type="xml">
+                <field name="parent_id" position="before">
+                    <field name="code" />
+                </field>
+            </field>
+        </record>
     
         <record id="product_template_form_view" model="ir.ui.view">
             <field name="name">product.template.view.form.inherit</field>
@@ -13,6 +24,30 @@
                 </field>
             </field>
         </record>
+
+    <record id="ffacsa_product_group_view_form" model="ir.ui.view">
+        <field name="name">ffacsa.product.group.view.form</field>
+        <field name="model">ffacsa.product.group</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="name" />
+                <field name="code" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="ffacsa_product_group_action" model="ir.actions.act_window">
+        <field name="name">Product Groups</field>
+        <field name="res_model">ffacsa.product.group</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem
+        id="ffacsa_product_group_submenu"
+        name="Product Groups"
+        action="ffacsa_product_group_action"
+        parent="ffacsa_webservices.ffacsa_data_submenu"
+        sequence="10"/>
     
     </data>
     

@@ -16,8 +16,11 @@ TYPE = [
     ('territory', 'Territory'),
     ('pricelist', 'Pricelist'),
     ('paymenterm', 'Payment Term'),
-    ('product', 'Product')
-
+    ('product', 'Product'),
+    ('product_group', 'Product Group'),
+    ('warehouse', 'Warehouse'),
+    ('categ', 'Category'),
+    ('subcateg', 'SubCategory'),
 ]
 
 
@@ -237,6 +240,54 @@ class WebserviceLog(models.Model):
                 product.create( values )
             else:
                 self._update_record(values, 'product.product', product_id.id)
+        elif type=='product_group':
+            product_group = self.env['ffacsa.product.group']
+            product_group_id = product_group.search( [('code', '=', data.get('ItmsGrpCod', ''))], limit=1)
+            values = {
+                'name': data.get('ItmsGrpNam', ''),
+                'code': data.get('ItmsGrpCod', ''),
+            }
+            if not product_group_id:
+                product_group.create( values )
+            else:
+                self._update_record(values, 'ffacsa.product.group', product_group_id.id)
+        elif type=='warehouse':
+            warehouse = self.env['stock.warehouse']
+            warehouse_id = warehouse.search( [('code', '=', data.get('WhsCode', ''))], limit=1)
+            values = {
+                'code': data.get('WhsCode', ''),
+                'name': data.get('WhsName', ''),
+                #'Agencia': data.get('Agencia', ''),
+            }
+            if not warehouse_id:
+                warehouse_id.create( values )
+            else:
+                self._update_record(values, 'stock.warehouse', warehouse_id.id)
+        
+        elif type=='categ':
+            categ = self.env['product.category']
+            categ_id = categ.search( [('code', '=', data.get('Code', ''))], limit=1)
+            values = {
+                'code': data.get('Code', ''),
+                'name': data.get('Name', ''),
+            }
+            if not categ_id:
+                categ_id.create( values )
+            else:
+                self._update_record(values, 'product.category', categ_id.id)
+        elif type=='subcateg':
+            categ = self.env['product.category']
+            categ_id = categ.search( [('code', '=', data.get('Code', ''))], limit=1)
+            values = {
+                'code': data.get('Code', ''),
+                'name': data.get('Name', ''),
+            }
+            if not categ_id:
+                parent_id = categ.search( [('name', '=', data.get('Categoria', ''))], limit=1)
+                values['parent_id'] = parent_id.id if parent_id else False
+                categ_id.create( values )
+            else:
+                self._update_record(values, 'product.category', categ_id.id)
         else:
             return
 

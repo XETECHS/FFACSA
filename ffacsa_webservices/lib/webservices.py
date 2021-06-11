@@ -33,7 +33,11 @@ TABLES = {
     # PRODUCT GROUPS 
     'OITB': 'oitb',
     # WAREHOUSE
-    'OWHS' :'owhs'
+    'OWHS' :'owhs',
+    # PRODUCT CATEG
+    'ItemCategoria': 'ItemCategoria',
+    #PRODUCT SUBCATEG
+    'ItemSubCategoria': 'ItemSubCategoria',
 }
 
 
