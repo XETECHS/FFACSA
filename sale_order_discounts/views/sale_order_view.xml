@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="sale_order_form_view_extends">
+        <field name="name">sale.order.form.extends</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="new_order" context="{'default_new_order': True}" invisible="1"/>
+                <field name="global_discount" invisible="1"/>
+                <field name="amount_total_without_special" invisible="1"/>
+                <field name="apply_manual_discount" groups="base.group_system"/>
+                <field name="manual_discount" attrs="{'invisible' : [('apply_manual_discount', '=', False)]}"/>
+            </xpath>
+            <xpath expr="//tree/field[@name='price_unit']" position="before">
+                <field name="edit_price" invisible="1"/>
+            </xpath>
+            <xpath expr="//tree/field[@name='price_unit']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('qty_invoiced', '&gt;', 0), ('edit_price', '=', False)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='sale_order_template_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='amount_untaxed']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='amount_tax']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="after">
+                <field name="global_discount" invisible="1"/>
+                <field name="global_discount_amount" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
