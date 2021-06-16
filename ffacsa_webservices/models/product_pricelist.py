@@ -17,7 +17,7 @@ class Pricelist(models.Model):
 
 
 class PricelistItem(models.Model):
-    _inherit = "product.pricelist"
+    _inherit = "product.pricelist.item"
     
-    base_price =  fields.Float('Fixed Price', digits='Base Price')
-    total_price =  fields.Float('Fixed Price', digits='Total Price')
+    base_price =  fields.Float('Base Price', digits='Product Price')
+    total_price =  fields.Float('Total Price', digits='Product Price')
