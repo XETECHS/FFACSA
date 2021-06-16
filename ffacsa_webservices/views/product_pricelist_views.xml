@@ -8,6 +8,11 @@
             <field name="model">product.pricelist</field>
             <field name="inherit_id" ref="product.product_pricelist_view"/>
             <field name="arch" type="xml">
+
+                <field name="fixed_price" position="after">
+                    <field name="base_price" />
+                    <field name="total_price" />
+                </field>
                 <group name="pricelist_settings" position="inside">
                     <field name="code" />
                     <!-- <field name="branch_id" />

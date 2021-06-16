@@ -17,6 +17,8 @@ TYPE = [
     ('pricelist', 'Pricelist'),
     ('paymenterm', 'Payment Term'),
     ('product', 'Product'),
+    ('price', 'Price'),
+    ('inventory', 'Inventory'),
     ('product_group', 'Product Group'),
     ('warehouse', 'Warehouse'),
     ('categ', 'Category'),
@@ -93,7 +95,7 @@ class WebserviceLog(models.Model):
                     'business_name': data.get('CardFName', ''),
                     'website': data.get('IntrntSite', ''),
                     'balance': data.get('Balance', 0.0),
-                    'credit_line': data.get('CreditLine', 0.0),
+                    'over_credit': data.get('CreditLine', 0.0),
                     'u_category': data.get('', ''),
                     #'UpdateDate': data.get('', ''),
                 }
@@ -240,6 +242,29 @@ class WebserviceLog(models.Model):
                 product.create( values )
             else:
                 self._update_record(values, 'product.product', product_id.id)
+        
+        elif type=="price":
+            product_id = self.env['product.product'].search(
+                [('code', '=', data.get('ItemCode', ''))]
+            )
+            pricelist_id = self.env['product.pricelist'].search(
+                [('code', '=', data.get('ListNum', ''))]
+            )
+
+            values = {
+                'product_tmpl_id': product_id.product_tmpl_id.id,
+                'pricelist_id': pricelist_id.id,
+                'date_start':  data.get('FromDate', ''),
+                'date_end': data.get('ToDate', ''),
+                'fixed_price': data.get('Price', ''),
+                'base_price': data.get('BasePrice', ''),
+                'total_price': data.get('PriceAfVAT', ''),
+            }
+            self.env['product.pricelist.item'].create( values )
+        elif type=="inventory":
+            #product_group = self.env['ffacsa.product.group']
+            pass
+        
         elif type=='product_group':
             product_group = self.env['ffacsa.product.group']
             product_group_id = product_group.search( [('code', '=', data.get('ItmsGrpCod', ''))], limit=1)

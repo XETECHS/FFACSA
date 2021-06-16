@@ -7,24 +7,24 @@ class ResPartner(models.Model):
     _description = 'Res Partner'
 
     # CONTACT INFORMATION
-    first_name  = fields.Char(string='First Name')
-    middle_name = fields.Char(string='Middle Name')
-    last_name = fields.Char(string='Last Name')
+    first_name  = fields.Char(string='First Name', readonly=True)
+    middle_name = fields.Char(string='Middle Name', readonly=True)
+    last_name = fields.Char(string='Last Name', readonly=True)
 
-    ffacsa_group_id = fields.Many2one('ffacsa.partner.group', string='FFACSA Group')
-    ffacsa_industry_id = fields.Many2one('ffacsa.industry', string='FFACSA Industry')
-    ffacsa_territory_id = fields.Many2one('ffacsa.territory', string='FFACSA Territory')
+    ffacsa_group_id = fields.Many2one('ffacsa.partner.group', string='FFACSA Group', readonly=True)
+    ffacsa_industry_id = fields.Many2one('ffacsa.industry', string='FFACSA Industry', readonly=True)
+    ffacsa_territory_id = fields.Many2one('ffacsa.territory', string='FFACSA Territory', readonly=True)
 
 
     phone2 = fields.Char()
-    source_id = fields.Char(string='Source')
-    business_name = fields.Char(string='Business Name')
-    balance = fields.Monetary(string='Balance')
-    credit_line = fields.Monetary(string='Credit Line')
-    u_category = fields.Char(string="Calif")
+    source_id = fields.Char(string='Source', readonly=True)
+    business_name = fields.Char(string='Business Name', readonly=True)
+    balance = fields.Monetary(string='Balance', readonly=True)
+    u_category = fields.Char(string="Calif", readonly=True)
 
-    UpdateDate = fields.Datetime(string='')
-    #partner_type = fields.Char(string='')
+    #UpdateDate = fields.Datetime(string='')
+    #credit_line = fields.Monetary(string='Credit Line')
+    SlpCode = fields.Char(string='Seller Code', readonly=True)
 
     # FFACSA TABLES
 

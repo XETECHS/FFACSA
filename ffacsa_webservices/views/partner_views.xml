@@ -24,9 +24,8 @@
                             <field name="ffacsa_group_id" />
                             <field name="ffacsa_industry_id" />
                             <field name="ffacsa_territory_id" />
-                            <field name="credit_line" />
                             <field name="u_category" />
-                            <field name="UpdateDate" />
+                            <field name="SlpCode" />
                         </group>
                     </page>
                 </notebook>

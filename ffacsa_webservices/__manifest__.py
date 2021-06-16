@@ -9,7 +9,9 @@
         'contacts',
         'sale_management',
         'stock',
-        'branch'],
+        'branch',
+        'partner_credit_limit'
+        ],
     'data': [
         'security/ir.model.access.csv',
         'views/ffacsa_webservice_log_views.xml',

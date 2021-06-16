@@ -14,4 +14,10 @@ class Pricelist(models.Model):
     # branch_id = fields.Many2one('res.branch', string="Branch", domain=_allowed_branches)
     code = fields.Char(string='Code')
     #level = fields.Char(string='')
+
+
+class PricelistItem(models.Model):
+    _inherit = "product.pricelist"
     
+    base_price =  fields.Float('Fixed Price', digits='Base Price')
+    total_price =  fields.Float('Fixed Price', digits='Total Price')

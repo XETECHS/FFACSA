@@ -52,6 +52,36 @@ class ImportProduct(models.TransientModel):
                     _logger.info( 'No HTTP resource was found' )
                     end = False
         
+        if self.price:
+            end, pageNumber = True, 1
+            while end:
+                data = GET_DATA( 'ITM1', orderBy='ItemCode', pageSize=50, pageNumber=pageNumber )
+                if data:
+                    for record in data['Results']:
+                        LOGGER('price', record, record['ItemCode'])
+                    if data['NextPageUrl']:
+                        pageNumber+=1
+                    else:
+                        end = False
+                else:
+                    _logger.info( 'No HTTP resource was found' )
+                    end = False
+
+        if self.inventory:
+            end, pageNumber = True, 1
+            while end:
+                data = GET_DATA( 'OITW', orderBy='ItemCode', pageSize=50, pageNumber=pageNumber )
+                if data:
+                    for record in data['Results']:
+                        LOGGER('inventory', record, record['ItemCode'])
+                    if data['NextPageUrl']:
+                        pageNumber+=1
+                    else:
+                        end = False
+                else:
+                    _logger.info( 'No HTTP resource was found' )
+                    end = False
+
         if self.warehouse:
             end, pageNumber = True, 1
             while end:
