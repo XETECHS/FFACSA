@@ -4,6 +4,7 @@ import logging
 
 from odoo import _, api, fields, models
 from odoo.addons.ffacsa_webservices.lib.webservices import POST_DATA
+from odoo.exceptions import UserError
 
 _logger = logging.getLogger( __name__ )
 
@@ -17,6 +18,7 @@ class SaleOrder(models.Model):
         required=True, readonly=False, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
         check_company=True)
     region_id = fields.Many2one('ffacsa.users.region', string='Region', related="user_id.region_id")
+    ffacsa_sale_order = fields.Char(string='FFACSA Order', readonly=True)
 
     @api.onchange('wharehouse_id')
     def _onchange_warehouse(self):
@@ -40,8 +42,8 @@ class SaleOrder(models.Model):
         quotation = {
             'DocDate': self.date_order.strftime('%Y-%m-%dT%H:%M:%S'),
             'DocStatus': 'O',
-            'CardCode': self.partner_id.source_id,
-            'CardName': self.partner_id.name,
+            'CardCode': "14",
+            'CardName': "FFACSA CONTIC",
             'FacNIT': self.partner_id.vat,
             'FacNom': self.partner_id.name,
             'Telefono': self.partner_id.phone,
@@ -58,7 +60,9 @@ class SaleOrder(models.Model):
             'Saldo': self.amount_total,
             'Detalle': lines
         }
-        _logger.info( quotation )
-        data = POST_DATA(quotation)
 
-        return data
+        data = POST_DATA( quotation )
+        if data.get('DocNum'):
+            self.ffacsa_sale_order = data.get('DocNum')
+        else:
+            raise UserError(_( data ))
