@@ -238,6 +238,7 @@ class WebserviceLog(models.Model):
                 #'categ_id': ItemCategoria,
                 #'website_published': data.get('PublicarWeb', '') == 'Y',
             }
+            _logger.info( values )
             if not product_id:
                 product.create( values )
             else:

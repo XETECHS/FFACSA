@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_users_form" model="ir.ui.view">
+        <field name="name">res.users.form.inherit</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <group name="messaging" position="before">
+                <group>
+                    <field name="code_sap" />
+                    <field name="region_id" />
+                </group> 
+            </group>
+        </field>
+    </record>
+
+    <record id="ffacsa_users_region_view_form" model="ir.ui.view">
+        <field name="name">ffacsa.users.region.view.form</field>
+        <field name="model">ffacsa.users.region</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="name" />
+                <field name="code" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="ffacsa_users_region_action" model="ir.actions.act_window">
+        <field name="name">Regions</field>
+        <field name="res_model">ffacsa.users.region</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem
+        id="ffacsa_partner_group_submenu"
+        name="Regions"
+        action="ffacsa_users_region_action"
+        parent="ffacsa_webservices.ffacsa_data_submenu"
+        sequence="10"/>
+
+</odoo>

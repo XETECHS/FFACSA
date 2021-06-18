@@ -20,6 +20,8 @@
         'views/account_views.xml',
         'views/product_views.xml',
         'views/sale_views.xml',
+        'views/res_users_views.xml',
+        'views/stock_views.xml',
         'wizard/import_partner_views.xml',
         'wizard/import_partner_additional_views.xml',
         'wizard/import_product_views.xml',

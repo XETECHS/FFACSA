@@ -8,3 +8,4 @@ class StockWarehouse(models.Model):
     _description = 'Stock Warehouse'
 
     code = fields.Char(string='Code')
+    region_id = fields.Many2one('ffacsa.users.region', string='Region')

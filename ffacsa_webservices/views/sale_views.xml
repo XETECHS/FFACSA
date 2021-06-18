@@ -7,8 +7,16 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock"/>
             <field name="arch" type="xml">
+
+                <xpath expr='//button[@name="action_confirm"]' position="before">
+                    <button name="send_ffacsa_quotation" string="Send FFACSA Quotation" type="object"/>
+                </xpath>
+                
+                <field name="user_id" position="after">
+                    <field name="region_id"/>
+                </field>
                 <field name="warehouse_id" position="attributes">
-                    <attribute name="domain" >[('branch_id', '=', branch_id)]</attribute>
+                    <attribute name="domain" >[('region_id', '=', region_id)]</attribute>
                 </field>
                 <!-- <xpath expr="//branch_id" position="replace">
                     <field name="branch_id">
