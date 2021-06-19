@@ -8,7 +8,6 @@ class ResUsers(models.Model):
     region_id = fields.Many2one('ffacsa.users.region', string='Region')
 
 
-
 class ffacsaUsersRegion(models.Model):
     _name = 'ffacsa.users.region'
     _description = 'ffacsa Users Region'

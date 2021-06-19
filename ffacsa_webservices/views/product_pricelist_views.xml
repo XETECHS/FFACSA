@@ -15,8 +15,8 @@
                 </field>
                 <group name="pricelist_settings" position="inside">
                     <field name="code" />
-                    <!-- <field name="branch_id" />
-                    <field name="level" /> -->
+                    <field name="branch" />
+                    <!-- <field name="level" /> -->
                 </group>
             </field>
         </record>

@@ -12,19 +12,17 @@
                     <button name="send_ffacsa_quotation" string="Send FFACSA Quotation" type="object"/>
                 </xpath>
 
+                <field  name="warehouse_id" position="replace"/>
                 <field name="partner_id" position="before">
                     <field name="ffacsa_sale_order" />
+                    <field name="region_id"/>
+                    <field  name="warehouse_id" 
+                            options="{'no_create': True}"
+                            domain="[('region_id', '=', region_id)]"
+                            force_save="1"/>
                 </field>
                 
-                <field name="user_id" position="after">
-                    <field name="region_id"/>
-                </field>
-                <field name="warehouse_id" position="attributes">
-                    <attribute name="domain" >[('region_id', '=', region_id)]</attribute>
-                </field>
-                <!-- <xpath expr="//branch_id" position="replace">
-                    <field name="branch_id">
-                </xpath> -->
+                
             </field>
         </record>
 

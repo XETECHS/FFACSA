@@ -9,7 +9,6 @@
         'contacts',
         'sale_management',
         'stock',
-        'branch',
         'partner_credit_limit'
         ],
     'data': [

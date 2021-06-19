@@ -6,12 +6,7 @@ class Pricelist(models.Model):
     _inherit = "product.pricelist"
     _description = "Pricelist"
 
-    # @api.model
-    # def _allowed_branches(self):
-    #     a = self.env.user.branch_ids.ids
-    #     return [('id', 'in', self.env.user.branch_ids.ids)]
-
-    # branch_id = fields.Many2one('res.branch', string="Branch", domain=_allowed_branches)
+    branch = fields.Char(string="Branch")
     code = fields.Char(string='Code')
     #level = fields.Char(string='')
 

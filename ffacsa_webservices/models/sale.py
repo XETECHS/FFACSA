@@ -12,7 +12,6 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
     _description = 'Sale Order'
 
-    branch_id = fields.Many2one('res.branch', readonly=False)
     warehouse_id = fields.Many2one(
         'stock.warehouse', string='Warehouse',
         required=True, readonly=False, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},

@@ -5,6 +5,8 @@ import logging
 from datetime import datetime
 
 from odoo import _, api, fields, models
+from odoo.exceptions import UserError
+
 _logger = logging.getLogger( __name__ )
 
 TYPE = [
@@ -199,7 +201,7 @@ class WebserviceLog(models.Model):
                 'code': data.get('ListNum', ''),
                 'name': data.get('ListName', ''),
                 'active': True if data.get('ValidFor', '') == 'Y' else False,
-                # 'branch_id': data.get('U_Agencia', ''),
+                'branch': data.get('U_Agencia', ''),
                 # 'level': data.get('U_Nivel', ''),
             }
             if not pricelist_id:
@@ -251,6 +253,8 @@ class WebserviceLog(models.Model):
             pricelist_id = self.env['product.pricelist'].search(
                 [('code', '=', data.get('ListNum', ''))]
             )
+            if not product_id or not pricelist_id:
+                raise UserError(_('product or pricelist not found.'))
 
             values = {
                 'product_tmpl_id': product_id.product_tmpl_id.id,
@@ -283,7 +287,7 @@ class WebserviceLog(models.Model):
             values = {
                 'code': data.get('WhsCode', ''),
                 'name': data.get('WhsName', ''),
-                #'Agencia': data.get('Agencia', ''),
+                'branch': data.get('Agencia', ''),
             }
             if not warehouse_id:
                 warehouse_id.create( values )

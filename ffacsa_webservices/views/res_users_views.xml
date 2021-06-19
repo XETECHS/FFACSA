@@ -33,7 +33,7 @@
     </record>
 
     <menuitem
-        id="ffacsa_partner_group_submenu"
+        id="ffacsa_user_region_submenu"
         name="Regions"
         action="ffacsa_users_region_action"
         parent="ffacsa_webservices.ffacsa_data_submenu"
