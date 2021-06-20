@@ -248,6 +248,7 @@ class WebserviceLog(models.Model):
                 self.env.cr.commit()
             else:
                 self._update_record(values, 'product.product', product_id.id)
+                self.env.cr.commit()
         
         elif type=="price":
             item = self.env['product.pricelist.item']
@@ -273,8 +274,10 @@ class WebserviceLog(models.Model):
             }
             if not item_id:
                 item.create( values )
+                self.env.cr.commit()
             else:
                 self._update_record(values, 'product.pricelist.item', item_id.id)
+                self.env.cr.commit()
                 
         elif type=="inventory":
             #product_group = self.env['ffacsa.product.group']
