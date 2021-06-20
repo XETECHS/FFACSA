@@ -255,7 +255,7 @@ class WebserviceLog(models.Model):
                 [('default_code', '=', data.get('ItemCode', ''))]
             )
             pricelist_id = self.env['product.pricelist'].search(
-                [('code', '=', data.get('ListNum', ''))]
+                [('source_id', '=', data.get('ListNum', ''))]
             )
             if not product_id or not pricelist_id:
                 raise UserError(_('product or pricelist not found.'))

@@ -73,7 +73,7 @@
         name="Logs"
         action="ffacsa_webservice_log_action"
         parent="ffacsa_data_menu"
-        sequence="10"/>
+        sequence="1"/>
     
     </data>
     
