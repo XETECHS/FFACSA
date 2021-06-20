@@ -14,17 +14,17 @@
             </field>
         </record>
     
-        <record id="product_template_form_view" model="ir.ui.view">
+        <!-- <record id="product_template_form_view" model="ir.ui.view">
             <field name="name">product.template.view.form.inherit</field>
             <field name="model">product.template</field>
             <field name="inherit_id" ref="product.product_template_form_view"/>
             <field name="arch" type="xml">
                 <field name="categ_id" position="after">
                     <field name="code" />
-                </field>
+                </field> 
                 
             </field>
-        </record>
+        </record>-->
 
     <record id="ffacsa_product_group_view_form" model="ir.ui.view">
         <field name="name">ffacsa.product.group.view.form</field>
