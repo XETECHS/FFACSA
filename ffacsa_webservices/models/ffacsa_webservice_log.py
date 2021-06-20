@@ -226,7 +226,7 @@ class WebserviceLog(models.Model):
         elif type=='product':
             product = self.env['product.product']
             product_id = product.search( [('code', '=',  data.get('ItemCode', '') )], limit=1 )
-            categ_id = self.env['prodcut.category'].search( [('code', '=', data.get('ItemCode', 'ItemCategoria'))], limit=1 )
+            categ_id = self.env['product.category'].search( [('code', '=', data.get('ItemCode', 'ItemCategoria'))], limit=1 )
             
             values = {
                 'code': str( data.get('ItemCode', '') ),
@@ -242,7 +242,7 @@ class WebserviceLog(models.Model):
                 'categ_id': categ_id.id if categ_id else False,
                 #'website_published': data.get('PublicarWeb', '') == 'Y',
             }
-            
+
             if not product_id:
                 product.create( values )
             else:
