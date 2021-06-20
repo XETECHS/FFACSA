@@ -196,7 +196,7 @@ class WebserviceLog(models.Model):
                 self._update_record( values , 'ffacsa.territory', territory_id.id)
         elif type=='pricelist':
             pricelist = self.env['product.pricelist']
-            pricelist_id = pricelist.search([('source_id', '=', 'ListNum')], limit=1)
+            pricelist_id = pricelist.search([('source_id', '=', data.get('ListNum', ''))], limit=1)
             values = {
                 'source_id': data.get('ListNum', ''),
                 'name': data.get('ListName', ''),
