@@ -250,7 +250,7 @@ class WebserviceLog(models.Model):
                 self._update_record(values, 'product.product', product_id.id)
         
         elif type=="price":
-            item = self.env['product.']
+            item = self.env['product.pricelist.item']
             product_id = self.env['product.product'].search(
                 [('default_code', '=', data.get('ItemCode', ''))]
             )
@@ -259,7 +259,9 @@ class WebserviceLog(models.Model):
             )
             if not product_id or not pricelist_id:
                 raise UserError(_('product or pricelist not found.'))
-
+            item_id = item.search([
+                    ('product_tmpl_id', '=', product_id.product_tmpl_id.id),
+                    ('pricelist_id', '=', pricelist_id.id)], limit=1)
             values = {
                 'product_tmpl_id': product_id.product_tmpl_id.id,
                 'pricelist_id': pricelist_id.id,
@@ -269,7 +271,11 @@ class WebserviceLog(models.Model):
                 'base_price': data.get('BasePrice', ''),
                 'total_price': data.get('PriceAfVAT', ''),
             }
-            self.env['product.pricelist.item'].create( values )
+            if not item_id:
+                item.create( values )
+            else:
+                self._update_record(values, 'product.pricelist.item', item_id.id)
+                
         elif type=="inventory":
             #product_group = self.env['ffacsa.product.group']
             pass
