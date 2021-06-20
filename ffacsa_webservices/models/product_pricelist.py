@@ -7,7 +7,7 @@ class Pricelist(models.Model):
     _description = "Pricelist"
 
     branch = fields.Char(string="Branch")
-    code = fields.Char(string='Code')
+    source_id = fields.Char(string='Code')
     #level = fields.Char(string='')
 
 

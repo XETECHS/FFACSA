@@ -196,9 +196,9 @@ class WebserviceLog(models.Model):
                 self._update_record( values , 'ffacsa.territory', territory_id.id)
         elif type=='pricelist':
             pricelist = self.env['product.pricelist']
-            pricelist_id = pricelist.search([('code', '=', 'ListNum')], limit=1)
+            pricelist_id = pricelist.search([('source_id', '=', 'ListNum')], limit=1)
             values = {
-                'code': data.get('ListNum', ''),
+                'source_id': data.get('ListNum', ''),
                 'name': data.get('ListName', ''),
                 'active': True if data.get('ValidFor', '') == 'Y' else False,
                 'branch': data.get('U_Agencia', ''),
@@ -229,7 +229,7 @@ class WebserviceLog(models.Model):
             categ_id = self.env['product.category'].search( [('code', '=', data.get('ItemCategoria', ''))], limit=1 )
             
             values = {
-                'code': str( data.get('ItemCode', '') ),
+                #'code': str( data.get('ItemCode', '') ),
                 'name': data.get('ItemName', ''),
                 'default_code': data.get('ItemCode', ''),
                 'description_sale': data.get('FrgnName', ''),
@@ -250,6 +250,7 @@ class WebserviceLog(models.Model):
                 self._update_record(values, 'product.product', product_id.id)
         
         elif type=="price":
+            item = self.env['product.']
             product_id = self.env['product.product'].search(
                 [('default_code', '=', data.get('ItemCode', ''))]
             )

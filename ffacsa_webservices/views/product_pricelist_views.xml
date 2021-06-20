@@ -14,7 +14,7 @@
                     <field name="total_price" />
                 </field>
                 <group name="pricelist_settings" position="inside">
-                    <field name="code" />
+                    <field name="source_id" />
                     <field name="branch" />
                     <!-- <field name="level" /> -->
                 </group>
