@@ -263,11 +263,17 @@ class WebserviceLog(models.Model):
             item_id = item.search([
                     ('product_tmpl_id', '=', product_id.product_tmpl_id.id),
                     ('pricelist_id', '=', pricelist_id.id)], limit=1)
+            try:
+                start = datetime.strptime( data.get('FromDate', ''), '%Y-%m-%dT%H:%M:%S')
+                end = datetime.strptime( data.get('ToDate', ''), '%Y-%m-%dT%H:%M:%S')
+            except:
+                start, end = False, False
+            
             values = {
                 'product_tmpl_id': product_id.product_tmpl_id.id,
                 'pricelist_id': pricelist_id.id,
-                'date_start':  data.get('FromDate', ''),
-                'date_end': data.get('ToDate', ''),
+                'date_start': start,
+                'date_end': end,
                 'fixed_price': data.get('Price', ''),
                 'base_price': data.get('BasePrice', ''),
                 'total_price': data.get('PriceAfVAT', ''),
