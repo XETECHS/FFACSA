@@ -259,7 +259,7 @@ class WebserviceLog(models.Model):
                 [('source_id', '=', data.get('ListNum', ''))]
             )
             if not product_id or not pricelist_id:
-                raise UserError(_('product or pricelist not found.'))
+                return
             item_id = item.search([
                     ('product_tmpl_id', '=', product_id.product_tmpl_id.id),
                     ('pricelist_id', '=', pricelist_id.id)], limit=1)
