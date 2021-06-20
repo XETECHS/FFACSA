@@ -41,8 +41,8 @@ class SaleOrder(models.Model):
         quotation = {
             'DocDate': self.date_order.strftime('%Y-%m-%dT%H:%M:%S'),
             'DocStatus': 'O',
-            'CardCode': "14",
-            'CardName': "FFACSA CONTIC",
+            'CardCode': self.warehouse_id.branch,
+            'CardName': self.warehouse_id.name,
             'FacNIT': self.partner_id.vat,
             'FacNom': self.partner_id.name,
             'Telefono': self.partner_id.phone,

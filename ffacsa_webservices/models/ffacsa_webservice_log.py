@@ -226,6 +226,8 @@ class WebserviceLog(models.Model):
         elif type=='product':
             product = self.env['product.product']
             product_id = product.search( [('code', '=',  data.get('ItemCode', '') )], limit=1 )
+            categ_id = self.env['prodcut.category'].search( [('code', '=', data.get('ItemCode', 'ItemCategoria'))], limit=1 )
+            
             values = {
                 'code': str( data.get('ItemCode', '') ),
                 'name': data.get('ItemName', ''),
@@ -237,10 +239,10 @@ class WebserviceLog(models.Model):
                 'volume': data.get('SVolume', ''),
                 'weight': data.get('SWeight1', ''),
                 'description': data.get('UserText', ''),
-                #'categ_id': ItemCategoria,
+                'categ_id': categ_id.id if categ_id else False,
                 #'website_published': data.get('PublicarWeb', '') == 'Y',
             }
-            _logger.info( values )
+            
             if not product_id:
                 product.create( values )
             else:
@@ -248,7 +250,7 @@ class WebserviceLog(models.Model):
         
         elif type=="price":
             product_id = self.env['product.product'].search(
-                [('code', '=', data.get('ItemCode', ''))]
+                [('default_code', '=', data.get('ItemCode', ''))]
             )
             pricelist_id = self.env['product.pricelist'].search(
                 [('code', '=', data.get('ListNum', ''))]
