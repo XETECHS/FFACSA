@@ -16,6 +16,7 @@ class SaleOrder(models.Model):
         'stock.warehouse', string='Warehouse',
         required=True, readonly=False, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
         check_company=True)
+    branch = fields.Char(related="warehouse_id.branch")
     region_id = fields.Many2one('ffacsa.users.region', string='Region', related="user_id.region_id")
     ffacsa_sale_order = fields.Char(string='FFACSA Order', readonly=True)
 

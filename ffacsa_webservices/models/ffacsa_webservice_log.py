@@ -286,7 +286,7 @@ class WebserviceLog(models.Model):
                 self.env.cr.commit()
                 
         elif type=="inventory":
-            #product_group = self.env['ffacsa.product.group']
+            stock_quant = self.env['stock.quant']
             pass
         
         elif type=='product_group':
