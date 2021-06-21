@@ -42,23 +42,26 @@ class SaleOrder(models.Model):
         quotation = {
             'DocDate': self.date_order.strftime('%Y-%m-%dT%H:%M:%S'),
             'DocStatus': 'O',
+            'NumAtCard': self.name,
             'CardCode': self.warehouse_id.branch,
             'CardName': self.warehouse_id.name,
+            'CodBodega': self.warehouse_id.code,
+            'ListNum': int(self.pricelist_id.source_id),
             'FacNIT': self.partner_id.vat,
             'FacNom': self.partner_id.name,
             'Telefono': self.partner_id.phone,
             'EMail': self.partner_id.email,
             'EntregaLocal': "2",
             'DireccionEntrega': self.partner_id.street or '' + self.partner_id.street2 or '',
-            'Departamento': 1,
-            'Municipio': 113,
+            'Departamento': int( self.partner_id.state_id.code),
+            'Municipio': self.partner_id.town_id.code,
             'Comments': self.partner_id.street or '' + self.partner_id.street2 or '',
             'NombreEntrega': self.partner_id.name,
             'DPIEntrega': 0,
             'TelefonoEntrega': False,
             'DocTotal': self.amount_total,
             'Saldo': self.amount_total,
-            'Detalle': lines
+            'Detalle': lines,
         }
 
         data = POST_DATA( quotation )

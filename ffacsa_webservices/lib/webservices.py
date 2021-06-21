@@ -41,6 +41,8 @@ TABLES = {
     'ItemCategoria': 'ItemCategoria',
     #PRODUCT SUBCATEG
     'ItemSubCategoria': 'ItemSubCategoria',
+    # MUNICIPIOS
+    'MUNICIPIOS': 'MUNICIPIOS'
 }
 
 

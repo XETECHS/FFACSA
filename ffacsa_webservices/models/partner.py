@@ -6,6 +6,8 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
     _description = 'Res Partner'
 
+    country_id = fields.Many2one( default= lambda s: s.env.ref('base.gt') )
+    town_id = fields.Many2one('ffacsa.town', string="Town")
     # CONTACT INFORMATION
     first_name  = fields.Char(string='First Name', readonly=True)
     middle_name = fields.Char(string='Middle Name', readonly=True)

@@ -23,7 +23,9 @@
                     <field name="branch"/>
                 </field>
                 
-                
+                <field name="pricelist_id" position="attributes">
+                    <attribute name="domain">[('branch', '=', branch)]</attribute>
+                </field>
             </field>
         </record>
 
