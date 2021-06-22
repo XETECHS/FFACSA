@@ -84,7 +84,7 @@ class WebserviceLog(models.Model):
             product_pricelist = self.env['product.pricelist'].search( [('source_id', '=', data.get('ListNum', ''))], limit=1 )
             values = {
                     'type': 'contact',
-                    'company_type': 'company',
+                    'is_company': True,
                     'name': data.get('CardName', ''),
                     'vat': data.get('AddId', ''),
                     'ffacsa_group_id': group_id.id,
@@ -102,8 +102,8 @@ class WebserviceLog(models.Model):
                     'balance': data.get('Balance', 0.0),
                     'over_credit': data.get('CreditLine', 0.0),
                     #'u_category': data.get('', ''),
-                    'portalURL': data.get('portalURL', 0.0),
-                    'SlpCode': data.get('SlpCode', 0.0),
+                    'portalURL': data.get('PortalURL', ''),
+                    'SlpCode': data.get('SlpCode', ''),
                     #'UpdateDate': data.get('', ''),
                 }
             if not partner_id:
@@ -123,6 +123,7 @@ class WebserviceLog(models.Model):
                 comment+=data.get('Notes2')
             values = {
                 'type': 'contact',
+                'is_company': False,
                 'parent_id': parent_id.id if parent_id else False,
                 'street': data.get('Address', ''),
                 'name': data.get('Name', ''),
@@ -151,7 +152,7 @@ class WebserviceLog(models.Model):
             
             partner.create({
                 'type': 'invoice' if data.get('CardName', '') == 'B' else 'delivery',
-                #'company_type': 'company',
+                'is_company': False,
                 'name': data.get('Address'),
                 'parent_id': parent_id.id if parent_id else False,
                 'street': data.get('Address', ''),
@@ -246,7 +247,7 @@ class WebserviceLog(models.Model):
                 'description': data.get('UserText', ''),
                 'categ_id': categ_id.id if categ_id else False,
                 #'website_published': data.get('PublicarWeb', '') == 'Y',
-                'portalURL': data.get('portalURL', ''),
+                'portalURL': data.get('PortalURL', ''),
             }
 
             if not product_id:
