@@ -17,9 +17,10 @@ class ffacsaTown(models.Model):
     def action_import(self):
         state = self.env['res.country.state']
         data = GET_DATA( 'MUNICIPIOS' )
+        country_id = self.env.ref('base.gt')
         if data:
             for record in data:
-                state_id = state.search( [('code', '=', record.get('COD_DEPTO'))], limit=1)
+                state_id = state.search( [('code', '=', record.get('COD_DEPTO')), ('country_id', '=', country_id.id)], limit=1)
                 self.create({
                     'name': record.get('DESC_MUNIC'),
                     'code': record.get('COD_MUNIC'),
