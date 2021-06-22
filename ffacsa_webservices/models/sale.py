@@ -18,7 +18,7 @@ class SaleOrder(models.Model):
         check_company=True)
     branch = fields.Char(related="warehouse_id.branch")
     region_id = fields.Many2one('ffacsa.users.region', string='Region', related="user_id.region_id")
-    ffacsa_sale_order = fields.Char(string='FFACSA Order', readonly=True)
+    ffacsa_sale_order = fields.Char(string='FFACSA Order', readonly=True, copy=False)
     
     
     comments = fields.Text('Comments')
@@ -59,8 +59,8 @@ class SaleOrder(models.Model):
             'EMail': self.partner_id.email,
             'EntregaLocal': "2",
             'DireccionEntrega': self.partner_id.street or '' + self.partner_id.street2 or '',
-            'Departamento': int( self.partner_id.state_id.code),
-            'Municipio': self.partner_id.town_id.code,
+            'Departamento': 1,#int( self.partner_id.state_id.code),
+            'Municipio': 113,#self.partner_id.town_id.code,
             'Comments': self.comments,
             'NombreEntrega': self.delivery_name,
             'DPIEntrega': self.delivery_pdi,
