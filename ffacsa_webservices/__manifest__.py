@@ -12,6 +12,7 @@
         'partner_credit_limit'
         ],
     'data': [
+        'data/ir_cron_data.xml'
         'security/ir.model.access.csv',
         'views/ffacsa_webservice_log_views.xml',
         'views/partner_views.xml',
