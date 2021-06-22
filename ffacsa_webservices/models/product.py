@@ -10,6 +10,16 @@ class ProductTemplate(models.Model):
     default_code = fields.Char(readonly=True)
     service_to_purchase = fields.Boolean("Purchase Automatically", help="If ticked, each time you sell this product through a SO, a RfQ is automatically created to buy the product." 
                 "Tip: don't forget to set a vendor on the product.")
+    portalURL = fields.Char(string='portal URL', readonly=True)
+
+
+    def go_portalURL(self):
+        if self.portalURL:
+            return {
+                "type": "ir.actions.act_url",
+                "url": self.portalURL,
+                "target": "new",
+            } 
 
 class ProductProduct(models.Model):
     _inherit = 'product.product'
@@ -18,6 +28,16 @@ class ProductProduct(models.Model):
     default_code = fields.Char(readonly=True)
     service_to_purchase = fields.Boolean("Purchase Automatically", help="If ticked, each time you sell this product through a SO, a RfQ is automatically created to buy the product." 
                 "Tip: don't forget to set a vendor on the product.")
+    portalURL = fields.Char(string='portal URL', readonly=True)
+
+
+    def go_portalURL(self):
+        if self.portalURL:
+            return {
+                "type": "ir.actions.act_url",
+                "url": self.portalURL,
+                "target": "new",
+            } 
 
 
 class ProductCategory(models.Model):

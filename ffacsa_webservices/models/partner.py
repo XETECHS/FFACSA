@@ -27,8 +27,17 @@ class ResPartner(models.Model):
     #UpdateDate = fields.Datetime(string='')
     #credit_line = fields.Monetary(string='Credit Line')
     SlpCode = fields.Char(string='Seller Code', readonly=True)
+    portalURL = fields.Char(string='portal URL', readonly=True)
+    
+    def go_portalURL(self):
+        if self.portalURL:
+            return {
+                "type": "ir.actions.act_url",
+                "url": self.portalURL,
+                "target": "new",
+            }    
 
-    # FFACSA TABLES
+# FFACSA TABLES
 
 class PartnerGroup(models.Model):
     _name = 'ffacsa.partner.group'

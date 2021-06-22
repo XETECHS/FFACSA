@@ -19,6 +19,12 @@ class SaleOrder(models.Model):
     branch = fields.Char(related="warehouse_id.branch")
     region_id = fields.Many2one('ffacsa.users.region', string='Region', related="user_id.region_id")
     ffacsa_sale_order = fields.Char(string='FFACSA Order', readonly=True)
+    
+    
+    comments = fields.Text('Comments')
+    delivery_name = fields.Char('Delivery Name')
+    delivery_pdi = fields.Char('Delivery DPI')
+    delivery_phone = fields.Char('Telefono Entrega')
 
     @api.onchange('wharehouse_id')
     def _onchange_warehouse(self):
@@ -55,10 +61,10 @@ class SaleOrder(models.Model):
             'DireccionEntrega': self.partner_id.street or '' + self.partner_id.street2 or '',
             'Departamento': int( self.partner_id.state_id.code),
             'Municipio': self.partner_id.town_id.code,
-            'Comments': self.partner_id.street or '' + self.partner_id.street2 or '',
-            'NombreEntrega': self.partner_id.name,
-            'DPIEntrega': 0,
-            'TelefonoEntrega': False,
+            'Comments': self.comments,
+            'NombreEntrega': self.delivery_name,
+            'DPIEntrega': self.delivery_pdi,
+            'TelefonoEntrega': self.delivery_phone,
             'DocTotal': self.amount_total,
             'Saldo': self.amount_total,
             'Detalle': lines,

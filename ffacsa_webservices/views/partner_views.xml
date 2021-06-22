@@ -8,6 +8,13 @@
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
+
+                <xpath expr="//form//sheet" position="before">
+                    <header>
+                        <button name="go_portalURL" string="Go FFACSA URL" type="object" class="oe_highlight"/>
+                    </header>
+                </xpath>
+                
                 <h1 position="after">
                     <h3>
                         <field name="business_name" placeholder="Business Name"/>
@@ -38,6 +45,7 @@
                             <field name="ffacsa_territory_id" />
                             <field name="u_category" />
                             <field name="SlpCode" />
+                            <field name="portalURL" />
                         </group>
                     </page>
                 </notebook>

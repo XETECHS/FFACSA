@@ -98,7 +98,9 @@ class WebserviceLog(models.Model):
                     'website': data.get('IntrntSite', ''),
                     'balance': data.get('Balance', 0.0),
                     'over_credit': data.get('CreditLine', 0.0),
-                    'u_category': data.get('', ''),
+                    #'u_category': data.get('', ''),
+                    'portalURL': data.get('portalURL', 0.0),
+                    'SlpCode': data.get('SlpCode', 0.0),
                     #'UpdateDate': data.get('', ''),
                 }
             if not partner_id:
@@ -233,7 +235,7 @@ class WebserviceLog(models.Model):
                 'name': data.get('ItemName', ''),
                 'default_code': data.get('ItemCode', ''),
                 'description_sale': data.get('FrgnName', ''),
-                'type': 'product',
+                'type': 'consu',
                 'sale_ok': data.get('SellItem', '') == 'Y',
                 'purchase_ok': data.get('PrchseItem', '') == 'Y',
                 'volume': data.get('SVolume', ''),
@@ -241,6 +243,7 @@ class WebserviceLog(models.Model):
                 'description': data.get('UserText', ''),
                 'categ_id': categ_id.id if categ_id else False,
                 #'website_published': data.get('PublicarWeb', '') == 'Y',
+                'portalURL': data.get('portalURL', ''),
             }
 
             if not product_id:
