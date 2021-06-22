@@ -75,13 +75,13 @@ class WebserviceLog(models.Model):
         if type == 'partner':
             partner_id = partner.search([('source_id', '=', data.get('CardCode') )], limit=1)
             # town_id = self.env['ffacsa.town'].search( [(,'=' ,)] )
-#             state_id = state.search( [  ('code', '=', record.get('')), 
+            # state_id = state.search( [  ('code', '=', record.get('')), 
                                         # ('country_id', '=', self.env.ref('base.gt').id)], limit=1)
             group_id = self.env['ffacsa.partner.group'].search( [('code', '=', data.get('GroupCode', ''))], limit=1 )
             industry_id = self.env['ffacsa.industry'].search( [('code', '=', data.get('IndustryC', ''))], limit=1 )
             territory_id = self.env['ffacsa.territory'].search( [('code', '=', data.get('Territory', ''))], limit=1 )
             payment_term_id = self.env['account.payment.term'].search( [('code', '=', data.get('GroupNum', ''))], limit=1 )
-            product_pricelist = self.env['product.pricelist'].search( [('code', '=', data.get('ListNum', ''))], limit=1 )
+            product_pricelist = self.env['product.pricelist'].search( [('source_id', '=', data.get('ListNum', ''))], limit=1 )
             values = {
                     'type': 'contact',
                     'company_type': 'company',
