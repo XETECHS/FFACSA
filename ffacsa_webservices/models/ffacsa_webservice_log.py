@@ -230,7 +230,7 @@ class WebserviceLog(models.Model):
                 self._update_record(values, 'account.payment.term', payment_term_id.id)
         
         elif type=='product':
-            product = self.env['product.product']
+            product = self.env['product.product'].sudo()
             product_id = product.search( [('default_code', '=',  data.get('ItemCode', '') )], limit=1 )
             categ_id = self.env['product.category'].search( [('code', '=', data.get('ItemCategoria', ''))], limit=1 )
             
