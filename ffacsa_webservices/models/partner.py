@@ -17,8 +17,8 @@ class ResPartner(models.Model):
     ffacsa_industry_id = fields.Many2one('ffacsa.industry', string='FFACSA Industry', readonly=True)
     ffacsa_territory_id = fields.Many2one('ffacsa.territory', string='FFACSA Territory', readonly=True)
 
-
-    phone2 = fields.Char()
+    phone = fields.Char(size=20)
+    phone2 = fields.Char(size=20)
     source_id = fields.Char(string='Source', readonly=True)
     business_name = fields.Char(string='Business Name', readonly=True)
     balance = fields.Monetary(string='Balance', readonly=True)

@@ -74,9 +74,11 @@ class WebserviceLog(models.Model):
             return
         if type == 'partner':
             partner_id = partner.search([('source_id', '=', data.get('CardCode') )], limit=1)
-            # town_id = self.env['ffacsa.town'].search( [(,'=' ,)] )
-            # state_id = state.search( [  ('code', '=', record.get('')), 
-                                        # ('country_id', '=', self.env.ref('base.gt').id)], limit=1)
+            town_id = self.env['ffacsa.town'].search( [('code', '=' , data.get('CodMunicipio'))] )
+            state_id = self.env['res.country.state'].search([  
+                                    ('code', '=', data.get('CodDepartamento')), 
+                                    ('country_id', '=', self.env.ref('base.gt').id)], 
+                                    limit=1)
             group_id = self.env['ffacsa.partner.group'].search( [('code', '=', data.get('GroupCode', ''))], limit=1 )
             industry_id = self.env['ffacsa.industry'].search( [('code', '=', data.get('IndustryC', ''))], limit=1 )
             territory_id = self.env['ffacsa.territory'].search( [('code', '=', data.get('Territory', ''))], limit=1 )
@@ -104,6 +106,8 @@ class WebserviceLog(models.Model):
                     #'u_category': data.get('', ''),
                     'portalURL': data.get('PortalURL', ''),
                     'SlpCode': data.get('SlpCode', ''),
+                    'town_id': town_id.id,
+                    'state_id': state_id.id,
                     #'UpdateDate': data.get('', ''),
                 }
             if not partner_id:
@@ -349,7 +353,7 @@ class WebserviceLog(models.Model):
 
     def _update_record(self, values, object, id):
         _logger.info( [object, id] )
-        record = self.env[object].browse( id )
+        record = self.env[object].sudo().browse( id )
         record.write(
             values
         )

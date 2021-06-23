@@ -26,9 +26,13 @@ class SaleOrder(models.Model):
     delivery_pdi = fields.Char('Delivery DPI')
     delivery_phone = fields.Char('Telefono Entrega')
 
-    @api.onchange('wharehouse_id')
-    def _onchange_warehouse(self):
-        pass
+
+    def action_confirm(self):
+        res = super(SaleOrder, self).action_confirm()
+        self.send_ffacsa_quotation()
+        return res
+
+
 
     def send_ffacsa_quotation(self):
         lines = []
