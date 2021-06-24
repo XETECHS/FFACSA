@@ -102,7 +102,7 @@ class WebserviceLog(models.Model):
                     'business_name': data.get('CardFName', ''),
                     'website': data.get('IntrntSite', ''),
                     'balance': data.get('Balance', 0.0),
-                    'over_credit': data.get('CreditLine', 0.0),
+                    'credit_limit': data.get('CreditLine', 0.0),
                     #'u_category': data.get('', ''),
                     'portalURL': data.get('PortalURL', ''),
                     'SlpCode': data.get('SlpCode', ''),
