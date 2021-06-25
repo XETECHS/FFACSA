@@ -37,6 +37,7 @@ class SaleOrder(models.Model):
     def send_ffacsa_quotation(self):
         lines = []
         partner = self.partner_id if not self.partner_id.parent_id else self.partner_id.parent_id
+        parent = self.partner_id.parent_id if self.partner_id.parent_id else self.partner_id.parent_id
         if partner.street:
             address = partner.street
         else:
@@ -47,7 +48,7 @@ class SaleOrder(models.Model):
         for line in self.order_line:
             lines.append( {
                 'LineNum' : i,
-                'ItemCode' : line.product_id.code,
+                'ItemCode' : line.product_id.default_code,
                 'Dscription': line.name,
                 'Quantity': line.product_uom_qty,
                 'Price': line.price_unit,
@@ -60,18 +61,19 @@ class SaleOrder(models.Model):
             'DocDate': self.date_order.strftime('%Y-%m-%dT%H:%M:%S'),
             'DocStatus': 'O',
             'NumAtCard': self.name,
-            'CardCode': self.warehouse_id.branch,
-            'CardName': self.warehouse_id.name,
+            'CardCode': parent.source_id,
+            'CardName': parent.name,
             'CodBodega': self.warehouse_id.code,
             'ListNum': int(self.pricelist_id.source_id),
             'FacNIT': partner.vat,
             'FacNom': partner.name,
+            'slpCode': partner.slpCode,
             'Telefono': partner.phone,
             'EMail': partner.email,
             'EntregaLocal': "2",
             'DireccionEntrega': address,
-            'Departamento': int( partner.state_id.code),
-            'Municipio': partner.town_id.code,
+            'Departamento': int( parent.state_id.code),
+            'Municipio': parent.town_id.code,
             'Comments': self.comments,
             'NombreEntrega': self.delivery_name,
             'DPIEntrega': self.delivery_pdi,
